@@ -5,15 +5,25 @@
 <% @posts.each do |display| %>
 
   <div class="posts">
+
     <h3>TITLE: </h3><%="#{display['title']}" %>
     <h3>POST: </h3><%="#{display['post']}"%></a>
-    <form method="post" action="/read/<%=display['id'] %>">
+
+      <% if @added_comments %>
+        <% @added_comments.map do |show| %>
+          <%="#{show['comment']}" %><br>
+        <% end %>
+      <% end %>
+
+    <form method="post" action="/show_all_posts/<%=display['id'] %>">
       <input type="hidden" name="_method" value="DELETE">
       <input type="submit" value="DELETE THIS POST">
     </form>
-    <form method="get" action="/read/<%=display['id'] %>/add_comment/">
+
+    <form method="get" action="/show_all_posts/<%=display['id'] %>/add_comment/">
       <input type="submit" value="ADD NEW COMMENT">
     </form>
+
   </div>
 
 <% end %>

@@ -11,15 +11,15 @@ class Server < Sinatra::Base
     erb :index
   end
 
-  get '/post' do
-    erb :post
+  get '/new_topic' do
+    erb :new_topic
   end
 
-  post '/post' do
+  post '/new_topic' do
     db = db_connect
 
     title = params[:title]
-    post = params[:post]
+    post = params[:new_topic]
 
     @new_post = db.exec_params("INSERT INTO posts (title, post) VALUES ($1, $2)", [title, post])
 
@@ -27,23 +27,27 @@ class Server < Sinatra::Base
     redirect("/")
   end
 
-  get '/read' do
+  get '/show_all_posts' do
     db = db_connect
+    id = params[:id]
 
     @posts = db.exec("SELECT * FROM posts").to_a
-    erb :read
+    @added_comments = db.exec("SELECT comment FROM comments").to_a
+    # WHERE post_id = '#{id}'
+    p @added_comments
+    erb :show_all_posts
   end
 
-  delete '/read/:id' do
+  delete '/show_all_posts/:id' do
     db = db_connect
 
     db.exec("DELETE FROM posts WHERE id = #{params["id"].to_i}").first
 
     "Post removed!"
-    redirect('/read')
+    redirect('/show_all_posts')
   end
 
-  get '/read/:id' do
+  get '/show_all_posts/:id' do
     db = db_connect
 
     db.exec("SELECT * FROM posts WHERE id = #{params["id"].to_i}").first
@@ -51,19 +55,19 @@ class Server < Sinatra::Base
     erb :add_comment
   end
 
-  get '/read/:id/add_comment/' do
+  get '/show_all_posts/:id/add_comment/' do
       erb :add_comment
   end
 
-  post '/read/:id/add_comment/' do
+  post '/show_all_posts/:id/add_comment/' do
     db = db_connect
-    comment = params[:post]
+    comment = params[:new_topic]
     id = params[:id]
 
     @new_post = db.exec_params("INSERT INTO comments (comment, post_id) VALUES ($1, $2)", [comment, id])
 
 
-    redirect("/read")
+    redirect("/show_all_posts")
   end
 
   def db_connect
