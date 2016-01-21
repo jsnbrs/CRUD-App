@@ -23,8 +23,7 @@ class Server < Sinatra::Base
 
     @new_post = db.exec_params("INSERT INTO posts (title, post) VALUES ($1, $2)", [title, post])
 
-
-    redirect("/")
+    redirect("/show_all_posts")
   end
 
   get '/show_all_posts' do
@@ -32,16 +31,17 @@ class Server < Sinatra::Base
     id = params[:id]
 
     @posts = db.exec("SELECT * FROM posts").to_a
-    @added_comments = db.exec("SELECT comment FROM comments").to_a
-    # WHERE post_id = '#{id}'
+    @added_comments = db.exec("SELECT * FROM comments").to_a
+# "SELECT posts.*, comments.user_id AS commentor_id, comments.comment, comments.post_id FROM posts, comments WHERE posts.id = comments.post_id"
     p @added_comments
     erb :show_all_posts
   end
 
   delete '/show_all_posts/:id' do
     db = db_connect
-
-    db.exec("DELETE FROM posts WHERE id = #{params["id"].to_i}").first
+    id = params[:id].to_i
+    # db.exec("DELETE FROM posts, comments WHERE posts.id = comments.post_id").first
+    db.exec("DELETE FROM posts WHERE id = #{id}; DELETE FROM comments WHERE post_id = #{id}")
 
     "Post removed!"
     redirect('/show_all_posts')
