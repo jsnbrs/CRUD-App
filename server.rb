@@ -37,22 +37,22 @@ class Server < Sinatra::Base
     erb :show_all_posts
   end
 
-  delete '/show_all_posts/:id' do
-    db = db_connect
-    id = params[:id].to_i
-    # db.exec("DELETE FROM posts, comments WHERE posts.id = comments.post_id").first
-    db.exec("DELETE FROM comments WHERE post_id = #{id}; DELETE FROM posts WHERE id = #{id}")
-
-    "Post removed!"
-    redirect('/show_all_posts')
-  end
-
   get '/show_all_posts/:id' do
     db = db_connect
 
     db.exec("SELECT * FROM posts WHERE id = #{params["id"].to_i}").first
     @comment = db.exec("SELECT title, post FROM posts WHERE id = #{params["id"].to_i}").first
     erb :add_comment
+  end
+
+  delete '/show_all_posts/:id' do
+    db = db_connect
+    id = params[:id].to_i
+
+    db.exec("DELETE FROM comments WHERE post_id = #{id}; DELETE FROM posts WHERE id = #{id}")
+
+    "Post removed!"
+    redirect('/show_all_posts')
   end
 
   get '/show_all_posts/:id/add_comment/' do
