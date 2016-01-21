@@ -41,7 +41,7 @@ class Server < Sinatra::Base
     db = db_connect
     id = params[:id].to_i
     # db.exec("DELETE FROM posts, comments WHERE posts.id = comments.post_id").first
-    db.exec("DELETE FROM posts WHERE id = #{id}; DELETE FROM comments WHERE post_id = #{id}")
+    db.exec("DELETE FROM comments WHERE post_id = #{id}; DELETE FROM posts WHERE id = #{id}")
 
     "Post removed!"
     redirect('/show_all_posts')
