@@ -9,18 +9,33 @@ class Server < Sinatra::Base
     erb :index
   end
 
-  get '/comment' do
+  get '/post' do
     erb :post
   end
 
-  post '/comment' do
-    @topic = params[:topic]
-    @comment = params[:comment]
+  post '/post' do
+    db = db_connect
+    title = params[:title]
+    post = params[:post]
+    "#{title}"
+    "#{post}"
+
+    @new_post = db.exec_params("INSERT INTO posts (title, post) VALUES ($1, $2)", [title, post])
+
+
     redirect("/")
   end
 
 
-  get '/read/:topic' do
+  get '/read/:post' do
+        "#{title}"
+    "#{post}"
     erb :read
+  end
+
+  private
+
+  def db_connect
+    PG.connect(dbname: "forum")
   end
 end

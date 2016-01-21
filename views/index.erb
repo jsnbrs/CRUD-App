@@ -1,7 +1,10 @@
 <h1>INDEX</h1>
 
 <h3>Recent Comments</h3>
-<% if @topic %>
-<%= @topic %>
-<%= @comment %>
+
+<% if @new_post %>
+<%= "#{@new_post[:title]}" %>
+<%= @new_post[:post] %>
 <% end %>
+@new_post
+"#{params[:title]}"
