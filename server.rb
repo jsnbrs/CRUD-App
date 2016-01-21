@@ -27,7 +27,6 @@ class Server < Sinatra::Base
     redirect("/")
   end
 
-
   get '/read' do
     db = db_connect
 
@@ -44,7 +43,31 @@ class Server < Sinatra::Base
     redirect('/read')
   end
 
+  get '/read/:id' do
+    db = db_connect
+
+    db.exec("SELECT * FROM posts WHERE id = #{params["id"].to_i}").first
+    @comment = db.exec("SELECT title, post FROM posts WHERE id = #{params["id"].to_i}").first
+    erb :add_comment
+  end
+
+  get '/read/:id/add_comment/' do
+      erb :add_comment
+  end
+
+  post '/read/:id/add_comment/' do
+    db = db_connect
+    comment = params[:post]
+    id = params[:id]
+
+    @new_post = db.exec_params("INSERT INTO comments (comment, post_id) VALUES ($1, $2)", [comment, id])
+
+
+    redirect("/read")
+  end
+
   def db_connect
     PG.connect(dbname: "forum")
   end
+
 end

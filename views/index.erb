@@ -3,12 +3,9 @@
 <h3></h3>
 
 
-<a href="/read">Recent Comments</a>
-<a href="/post">Post New Comment</a>
+<a href="/read">Recent Comments</a><br>
+<a href="/post">Post New Comment</a><br>
 
 <% if @new_post %>
-<%= "#{@new_post[:title]}" %>
-<%= @new_post[:post] %>
+Newest topic: <%="#{@new_post[:title]}" %>
 <% end %>
-@new_post
-"#{params[:title]}"
