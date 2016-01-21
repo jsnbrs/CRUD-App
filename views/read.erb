@@ -1,1 +1,16 @@
-READ
+
+<h1>Recent Posts</h1>
+
+
+<% @posts.each do |display| %>
+
+  <div class="posts">
+    <h3>TITLE: </h3><%="#{display['title']}" %>
+    <h3>POST: </h3><%="#{display['post']}"%></a>
+    <form method="post" action="/read/<%=display['id'] %>">
+      <input type="hidden" name="_method" value="DELETE">
+      <input type="submit" value="DELETE THIS POST">
+    </form>
+  </div>
+
+<% end %>
