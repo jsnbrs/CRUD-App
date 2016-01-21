@@ -14,11 +14,13 @@ class Server < Sinatra::Base
   end
 
   post '/comment' do
-    "Hello World"
+    @topic = params[:topic]
+    @comment = params[:comment]
+    redirect("/")
   end
 
 
-  get '/read' do
+  get '/read/:topic' do
     erb :read
   end
 end
