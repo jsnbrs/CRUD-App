@@ -1,12 +1,12 @@
-DROP TABLE IF EXISTS actors_movies;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS post;
+-- DROP TABLE IF EXISTS actors_movies;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS posts CASCADE;
 
 
 CREATE TABLE users(
   id serial PRIMARY KEY,
   name varchar NOT NULL,
-  email varchar NOT NULL,
+  email varchar NOT NULL UNIQUE,
   password varchar NOT NULL,
   img varchar
 );

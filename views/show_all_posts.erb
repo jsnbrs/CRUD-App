@@ -1,4 +1,4 @@
-<%if @current_user%>Logged in as: <%=current_user['name']%>
+
 
 <h2>Recent Posts</h2>
 
@@ -7,17 +7,18 @@
     <div class="posts">
 
       <h5>TITLE: </h5><%="#{display['title']}" %>
-      <h6>Posted by: </h6><%="#{@current_user}"%>
+      <h6>Posted by: </h6><%="#{current_user['name']}" %>
       <h5>POST: </h5>
       <div><%="#{display['post']}"%></div>
 
         <% if @added_comments %>
           <% @added_comments.each do |show| %>
             <% if show['post_id'].to_i == display['id'].to_i %>
-              <div><%= "#{show['comment']}" %></div><br>
-              <% end %>
+              <div><%= "#{current_user['name']}" %> => <%= "#{show['comment']}" %></div><br>
             <% end %>
           <% end %>
+        <% end %>
+
     <div class="input-row">
       <form method="post" action="/show_all_posts/<%=display['id'] %>">
         <input type="hidden" name="_method" value="DELETE">
@@ -33,5 +34,4 @@
 
     </div>
 
-  <% end %>
 <% end %>
