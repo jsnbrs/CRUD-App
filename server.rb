@@ -40,6 +40,7 @@ class Server < Sinatra::Base
 
     erb :signup_success
   end
+
 ########################################### login
   get '/login' do
     erb :login
@@ -47,15 +48,14 @@ class Server < Sinatra::Base
 
   post '/login' do
     db = db_connect
+
     email = params[:email]
     @user = db.exec_params("SELECT * FROM users WHERE email = $1", [email]).first
 
-    # @user = db.exec_params("SELECT * FROM users WHERE name = $1", [params[:name]]).first
-p @user
     if @user
       if BCrypt::Password.new(@user['password']) == params[:login_password]
         session['user_id'] == @user['id']
-        redirect '/'
+        redirect '/show_all_posts'
       else
         @error_password = "Your password isn't working."
         erb :login
@@ -68,8 +68,8 @@ p @user
 ########################################### log out
   get '/logout' do
     session['user_id'] = nil
-    flash[:notice] = "You have logged out."
-    redirect '/'
+      @logout_notice = "You have logged out."
+    redirect '/index'
   end
 ########################################### new topics
   get '/new_topic' do
@@ -81,8 +81,11 @@ p @user
 
     title = params[:title]
     post = params[:new_topic]
-
-    @new_post = db.exec_params("INSERT INTO posts (title, post) VALUES ($1, $2)", [title, post])
+    p @current_user
+    user_name = @current_user['id']
+p user_name
+p @current_user
+    @new_post = db.exec_params("INSERT INTO posts (title, post, user_name) VALUES ($1, $2, $3)", [title, post, user_id])
 
     redirect("/show_all_posts")
   end
@@ -94,7 +97,6 @@ p @user
     @posts = db.exec("SELECT * FROM posts").to_a
     @added_comments = db.exec("SELECT * FROM comments").to_a
 # "SELECT posts.*, comments.user_id AS commentor_id, comments.comment, comments.post_id FROM posts, comments WHERE posts.id = comments.post_id"
-    p @added_comments
     erb :show_all_posts
   end
 ########################################### individual posts

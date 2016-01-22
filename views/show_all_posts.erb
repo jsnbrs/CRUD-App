@@ -1,35 +1,37 @@
+<%if @current_user%>Logged in as: <%=current_user['name']%>
 
 <h2>Recent Posts</h2>
 
+  <% @posts.each do |display| %>
 
-<% @posts.each do |display| %>
+    <div class="posts">
 
-  <div class="posts">
+      <h5>TITLE: </h5><%="#{display['title']}" %>
+      <h6>Posted by: </h6><%="#{@current_user}"%>
+      <h5>POST: </h5>
+      <div><%="#{display['post']}"%></div>
 
-    <h5>TITLE: </h5><%="#{display['title']}" %>
-    <h5>POST: </h5>
-    <div><%="#{display['post']}"%></div>
-
-      <% if @added_comments %>
-        <% @added_comments.each do |show| %>
-          <% if show['post_id'].to_i == display['id'].to_i %>
-            <div><%= "#{show['comment']}" %></div><br>
+        <% if @added_comments %>
+          <% @added_comments.each do |show| %>
+            <% if show['post_id'].to_i == display['id'].to_i %>
+              <div><%= "#{show['comment']}" %></div><br>
+              <% end %>
             <% end %>
           <% end %>
-        <% end %>
-  <div class="input-row">
-    <form method="post" action="/show_all_posts/<%=display['id'] %>">
-      <input type="hidden" name="_method" value="DELETE">
-      <input type="submit" value="DELETE THIS POST">
-    </form>
-  </div>
+    <div class="input-row">
+      <form method="post" action="/show_all_posts/<%=display['id'] %>">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="submit" value="DELETE THIS POST">
+      </form>
+    </div>
 
-  <div class="input-row">
-    <form method="get" action="/show_all_posts/<%=display['id'] %>/add_comment/">
-      <input type="submit" value="ADD NEW COMMENT">
-    </form>
-  </div>
+    <div class="input-row">
+      <form method="get" action="/show_all_posts/<%=display['id'] %>/add_comment/">
+        <input type="submit" value="ADD NEW COMMENT">
+      </form>
+    </div>
 
-  </div>
+    </div>
 
+  <% end %>
 <% end %>
