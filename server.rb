@@ -2,6 +2,7 @@ require "sinatra/base"
 require 'pg'
 require 'bcrypt'
 require 'pry'
+# require 'redcarpet'
 
 class Server < Sinatra::Base
 
@@ -39,9 +40,9 @@ class Server < Sinatra::Base
 
   get '/show_all_posts/:id' do
     db = db_connect
-
-    db.exec("SELECT * FROM posts WHERE id = #{params["id"].to_i}").first
-    @comment = db.exec("SELECT title, post FROM posts WHERE id = #{params["id"].to_i}").first
+    id = params[:id].to_i
+    # db.exec("SELECT * FROM posts WHERE id = #{params["id"].to_i}").first
+    @comment = db.exec("SELECT title, post FROM posts WHERE (id = $1)", [id]).first
     erb :add_comment
   end
 
@@ -49,9 +50,9 @@ class Server < Sinatra::Base
     db = db_connect
     id = params[:id].to_i
 
-    db.exec("DELETE FROM comments WHERE post_id = #{id}; DELETE FROM posts WHERE id = #{id}")
+    db.exec_params("DELETE FROM comments WHERE (post_id = $1)", [id])
+    db.exec_params("DELETE FROM posts WHERE (id = $1)", [id])
 
-    "Post removed!"
     redirect('/show_all_posts')
   end
 
@@ -61,11 +62,10 @@ class Server < Sinatra::Base
 
   post '/show_all_posts/:id/add_comment/' do
     db = db_connect
-    comment = params[:new_topic]
+    add_new_comment = params[:add_new_comment]
     id = params[:id]
 
-    @new_post = db.exec_params("INSERT INTO comments (comment, post_id) VALUES ($1, $2)", [comment, id])
-
+    @new_post = db.exec_params("INSERT INTO comments (comment, post_id) VALUES ($1, $2)", [add_new_comment, id])
 
     redirect("/show_all_posts")
   end

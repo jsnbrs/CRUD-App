@@ -1,13 +1,15 @@
 <div>
 
-  <h1>Add Comment to topic</h1>
+  <h2>Add Comment to topic</h2>
 
   <form actions="/show_all_posts/<%= params[:id] %>/add_comment" method="post">
-
-    <label for="post">Comment: </label><br>
-    <textarea name="new_topic"></textarea><br>
-    <input type="submit" value="Submit New Comment!" />
-
+    <div class="input-row">
+      <label for="post">Comment: </label>
+      <textarea name="add_new_comment"></textarea>
+    </div>
+      <div class="input-row">
+      <input type="submit" value="Submit New Comment!" />
+    </div>
   </form>
 
 </div>

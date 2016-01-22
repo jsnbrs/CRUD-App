@@ -1,13 +1,21 @@
 <div>
 
-  <h1>New Topic/Comment</h1>
+  <h2>Post A New Topic</h2>
 
   <form actions="/new_topic" method="post">
-    <label for="title">Topic: </label><br>
-    <input type="title" name="title" /><br>
-    <label for="post">Comment: </label><br>
-    <textarea name="new_topic"></textarea><br>
-    <input type="submit" value="Submit Post!" />
+    <div class="input-row">
+        <label for="title">Topic: </label>
+        <input type="title" name="title" />
+    </div>
+
+    <div class="input-row">
+        <label for="post">Comment: </label>
+        <textarea name="new_topic"></textarea>
+    </div>
+
+    <div class="input-row">
+        <input type="submit" value="Submit Post!" />
+    </div>
   </form>
 
 </div>
