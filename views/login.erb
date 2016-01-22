@@ -1,0 +1,32 @@
+
+<div>
+
+  <h2>Log In</h2>
+
+    <%if @error_email%>
+      <%= @error_email%>
+    <%end%>
+
+    <%if @error_password%>
+      <%= @error_password%>
+    <%end%>
+
+  <form actions="/login" method="post">
+
+    <div class="input-row">
+        <label for="email">Email: </label>
+        <input type="email" name="email" />
+    </div>
+
+    <div class="input-row">
+        <label for="password">Password: </label>
+        <input type="password" name="login_password" />
+    </div>
+
+    <div class="input-row">
+        <input type="submit" value="Log In!" />
+    </div>
+
+  </form>
+
+</div>

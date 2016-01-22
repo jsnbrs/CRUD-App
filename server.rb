@@ -1,4 +1,4 @@
-require "sinatra/base"
+require 'sinatra/base'
 require 'pg'
 require 'bcrypt'
 require 'pry'
@@ -6,12 +6,72 @@ require 'pry'
 
 class Server < Sinatra::Base
 
+  enable :sessions
   set :method_override, true
+
+########################################### current user
+  def current_user
+    db = db_connect
+
+    if session['user_id']
+    @current_user ||= db.exec_params("SELECT * FROM users WHERE (id = $1)", [session['user_id']]).first
+    else
+      {}
+    end
+  end
 
   get '/' do
     erb :index
   end
+########################################### signup
+  get '/signup' do
+    erb :signup
+  end
 
+  post '/signup' do
+    db = db_connect
+
+    name = params[:name]
+    email = params[:email]
+    password_bcrypt = BCrypt::Password.create(params[:login_password])
+    new_user = db.exec_params("INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id", [name, email, password_bcrypt])
+
+    session['user_id'] = new_user.first['id'].to_i
+
+    erb :signup_success
+  end
+########################################### login
+  get '/login' do
+    erb :login
+  end
+
+  post '/login' do
+    db = db_connect
+    email = params[:email]
+    @user = db.exec_params("SELECT * FROM users WHERE email = $1", [email]).first
+
+    # @user = db.exec_params("SELECT * FROM users WHERE name = $1", [params[:name]]).first
+p @user
+    if @user
+      if BCrypt::Password.new(@user['password']) == params[:login_password]
+        session['user_id'] == @user['id']
+        redirect '/'
+      else
+        @error_password = "Your password isn't working."
+        erb :login
+      end
+    else
+      @error_email = "That email isn't working."
+      erb :login
+    end
+  end
+########################################### log out
+  get '/logout' do
+    session['user_id'] = nil
+    flash[:notice] = "You have logged out."
+    redirect '/'
+  end
+########################################### new topics
   get '/new_topic' do
     erb :new_topic
   end
@@ -26,7 +86,7 @@ class Server < Sinatra::Base
 
     redirect("/show_all_posts")
   end
-
+########################################### view all posts
   get '/show_all_posts' do
     db = db_connect
     id = params[:id]
@@ -37,7 +97,7 @@ class Server < Sinatra::Base
     p @added_comments
     erb :show_all_posts
   end
-
+########################################### individual posts
   get '/show_all_posts/:id' do
     db = db_connect
     id = params[:id].to_i
@@ -45,7 +105,7 @@ class Server < Sinatra::Base
     @comment = db.exec("SELECT title, post FROM posts WHERE (id = $1)", [id]).first
     erb :add_comment
   end
-
+########################################### delete posts
   delete '/show_all_posts/:id' do
     db = db_connect
     id = params[:id].to_i
@@ -55,7 +115,7 @@ class Server < Sinatra::Base
 
     redirect('/show_all_posts')
   end
-
+########################################### add comment to topic
   get '/show_all_posts/:id/add_comment/' do
       erb :add_comment
   end
@@ -69,7 +129,7 @@ class Server < Sinatra::Base
 
     redirect("/show_all_posts")
   end
-
+########################################### connect to db
   def db_connect
     PG.connect(dbname: "forum")
   end
