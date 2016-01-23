@@ -2,7 +2,7 @@ require 'sinatra/base'
 require 'pg'
 require 'bcrypt'
 require 'pry'
-# require 'redcarpet'
+require 'redcarpet'
 
 ERRORS = {
   "1" => "User already exists. Please use a different email.",
@@ -113,7 +113,8 @@ class Server < Sinatra::Base
     db = db_connect
     id = params[:id]
 
-    @posts = db.exec("SELECT * FROM posts").to_a
+    # @posts = db.exec("SELECT * FROM posts").to_a
+    @posts = db.exec("SELECT * FROM posts JOIN users ON posts.user_id = users.id")
     @added_comments = db.exec("SELECT * FROM comments").to_a
 
     # figure out what data to base this decision off of
@@ -129,7 +130,7 @@ class Server < Sinatra::Base
     db = db_connect
     id = params[:id].to_i
     # db.exec("SELECT * FROM posts WHERE id = #{params["id"].to_i}").first
-    @comment = db.exec("SELECT title, post FROM posts WHERE (id = $1)", [id]).first
+    @comment = db.exec("SELECT title, post, FROM posts WHERE (id = $1)", [id]).first
     erb :add_comment
   end
 ########################################### delete posts
@@ -169,4 +170,8 @@ class Server < Sinatra::Base
     PG.connect(dbname: "forum")
   end
 
+  # def markdown(markdown_comment)
+  #   markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+  #   markdown.render(markdown_comment)
+  # end
 end

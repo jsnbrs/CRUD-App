@@ -1,4 +1,4 @@
-
+<!-- cant use current user below need to get user out of posts -->
 
 <h2>Recent Posts</h2>
 
@@ -7,7 +7,7 @@
     <div class="posts">
 
       <h5>TITLE: </h5><%="#{display['title']}" %>
-      <h6>Posted by: </h6><%="#{current_user['name']}" %>
+      <h6>Posted by: </h6><%="#{display['name']}" %>  <!--display['user_id'] shows number, need to join-->
       <h5>POST: </h5>
       <div><%="#{display['post']}"%></div>
 
