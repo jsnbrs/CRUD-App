@@ -115,7 +115,8 @@ class Server < Sinatra::Base
 
     # @posts = db.exec("SELECT * FROM posts").to_a
     @posts = db.exec("SELECT * FROM posts JOIN users ON posts.user_id = users.id")
-    @added_comments = db.exec("SELECT * FROM comments").to_a
+    # @added_comments = db.exec("SELECT * FROM comments").to_a
+    @added_comments = db.exec("select * from comments join users on comments.user_id = users.id")
 
     # figure out what data to base this decision off of
     if session["user_id"]
@@ -138,7 +139,7 @@ class Server < Sinatra::Base
   delete '/show_all_posts/:id' do
     db = db_connect
     id = params[:id].to_i
-
+  ################################## need to fix, just deleting all comments not posts
     db.exec_params("DELETE FROM comments WHERE (post_id = $1)", [id])
     db.exec_params("DELETE FROM posts WHERE (id = $1)", [id])
 
