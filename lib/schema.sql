@@ -1,4 +1,4 @@
--- DROP TABLE IF EXISTS actors_movies;
+DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS posts CASCADE;
 
@@ -15,6 +15,7 @@ CREATE TABLE posts(
   id serial PRIMARY KEY,
   title varchar NOT NULL,
   post text,
+  post_count integer,
   user_id integer REFERENCES users(id)
 );
 

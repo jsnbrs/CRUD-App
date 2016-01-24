@@ -99,12 +99,20 @@ class Server < Sinatra::Base
     db = db_connect
 
     title = params[:title]
-    post = params[:new_topic]
-
+    # post = params[:new_topic]
+    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+    post = markdown.render(params[:new_topic])
     @session_user_id = session['user_id']
 
     @new_post = db.exec_params("INSERT INTO posts (title, post, user_id) VALUES ($1, $2, $3)", [title, post, session["user_id"]])
 
+    post_comments = db.exec("select post_id from comments").to_a
+    num_comments = post_comments.each_with_object(Hash.new(0)) { |o, h| h[o] += 1 }
+  #   num_comments.each do |count|
+  #   db.exec("INSERT INTO posts (post_count) VALUES ($1)", [count])
+  # end
+#################clean up above
+  
     redirect("/show_all_posts")
   end
 ########################################### view all posts
@@ -113,10 +121,16 @@ class Server < Sinatra::Base
     db = db_connect
     id = params[:id]
 
-    # @posts = db.exec("SELECT * FROM posts").to_a
-    @posts = db.exec("SELECT * FROM posts JOIN users ON posts.user_id = users.id")
-    # @added_comments = db.exec("SELECT * FROM comments").to_a
-    @added_comments = db.exec("select * from comments join users on comments.user_id = users.id")
+    @all_users = db.exec("SELECT * FROM users").to_a
+    @posts = db.exec("SELECT * FROM posts").to_a
+
+    # @posts = db.exec("SELECT * FROM posts JOIN users ON posts.user_id = users.id").to_a
+#Key (post_id)=(1) is not present in table "posts"
+
+
+
+    @added_comments = db.exec("select name, comment, post_id from users join comments on comments.user_id = users.id").to_a
+    # @added_comments = db.exec("select * from comments join users on comments.user_id = users.id")
 
     # figure out what data to base this decision off of
     if session["user_id"]
@@ -158,10 +172,19 @@ class Server < Sinatra::Base
   post '/show_all_posts/:id/add_comment/' do
     db = db_connect
 
-    add_new_comment = params[:add_new_comment]
-    id = params[:id]
+    # add_new_comment = params[:add_new_comment]
+    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+    add_new_comment = markdown.render(params[:add_new_comment])
+    ############# Counter
+    @topic_counter = 0
 
-    @new_post = db.exec_params("INSERT INTO comments (comment, post_id, user_id) VALUES ($1, $2, $3)", [add_new_comment, id, session['user_id']])
+
+    id = params[:id].to_i
+    # session_user_id_to_i = session['user_id'].to_i
+    
+
+
+    db.exec_params("INSERT INTO comments (comment, post_id, user_id) VALUES ($1, $2, $3)", [add_new_comment, id, session["user_id"]])
 
     redirect("/show_all_posts")
   end

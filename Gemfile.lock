@@ -41,6 +41,3 @@ DEPENDENCIES
   redcarpet
   sinatra
   sinatra-contrib
-
-BUNDLED WITH
-   1.11.2
