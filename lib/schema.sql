@@ -22,7 +22,7 @@ CREATE TABLE posts(
 CREATE TABLE comments(
   id serial PRIMARY KEY,
   comment text,
-  comment_count integer,
+  comment_count integer default 0,
   post_id integer REFERENCES posts(id),
   user_id integer REFERENCES users(id)
 );

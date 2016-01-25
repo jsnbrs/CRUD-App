@@ -1,9 +1,14 @@
+<div class="container">
+
 <h2>ALL TOPICS</h2>
 <div>
   <!-- select all from posts sort by upvote -->
-  <% @order_by_upvotes.each do |all| %>
+	  <% @order_by_upvotes.each do |all| %>
 
-    <ul><a href="/individual_topic/<%=all['id']%>"><%="#{all['title']}"%> has <%="#{all['upvote']}"%> Upvotes.</a></ul>
+	    <ul>
+	    	<h3><a href="/individual_topic/<%=all['id']%>">Topic: <%="#{all['title']}"%> has <%="#{all['upvote']}"%> Upvotes.</a></h3>
+	    </ul>
 
-  <% end %>
+	  <% end %>
+  </div>
 </div>

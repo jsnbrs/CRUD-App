@@ -106,9 +106,6 @@ class Server < Sinatra::Base
 
     @session_user_id = session['user_id']
     @new_post = db.exec_params("INSERT INTO posts (title, post, user_id) VALUES ($1, $2, $3)", [title, post, session["user_id"]])
-  
-    # post_comments = db.exec("select post_id from comments").to_a
-    # num_comments = post_comments.each_with_object(Hash.new(0)) { |o, h| h[o] += 1 }
 
     redirect("/show_all_posts")
   end
@@ -123,7 +120,7 @@ class Server < Sinatra::Base
     
     @comment_count = db.exec_params("select count (post_id) from comments where (post_id = $1)", [id]).to_a
     @added_comments = db.exec("select name, comment, post_id from users join comments on comments.user_id = users.id").to_a
-    # figure out what data to base this decision off of
+
     if session["user_id"]
       erb :show_all_posts
     else
@@ -141,10 +138,6 @@ class Server < Sinatra::Base
 
   get '/show_all_posts/:id' do
     db = db_connect
-    # id = params[:id].to_i
-    # @individual_post = db.exec_params("SELECT * FROM posts WHERE (id = $1)", [id]).first
-    # @comment = db.exec_params("SELECT title, post, FROM posts WHERE (id = $1)", [id]).first
-
     erb :add_comment
   end
 ########################################### delete posts
@@ -152,7 +145,7 @@ class Server < Sinatra::Base
   delete '/show_all_posts/:id' do
     db = db_connect
     id = params[:id].to_i
-  ################################## need to fix, just deleting all comments not posts
+
     db.exec_params("DELETE FROM comments WHERE (post_id = $1)", [id])
     db.exec_params("DELETE FROM posts WHERE (id = $1)", [id])
 
@@ -163,8 +156,7 @@ class Server < Sinatra::Base
   get '/show_all_posts/:id/add_comment/' do
     if session["user_id"] #### redirect here if user not logged in
       id = params[:id].to_i
-      #not working @individual_post = db.exec_params("SELECT * FROM posts WHERE (id = $1)", [id]).to_a
-    erb :add_comment
+      erb :add_comment
     else
       redirect('/login')
     end
@@ -186,16 +178,20 @@ class Server < Sinatra::Base
 
   get '/all_topics' do
     db = db_connect
-    @order_by_upvotes = db.exec("SELECT * FROM posts ORDER BY upvote DESC").to_a
 
-    erb :all_topics
+    @order_by_upvotes = db.exec("SELECT * FROM posts ORDER BY upvote DESC").to_a
+    if session["user_id"]
+      erb :all_topics
+    else
+      redirect('/login')
+    end
   end
 
   get '/individual_topic/:id' do
     db = db_connect
     id = params[:id].to_i
     @individual_post = db.exec_params("SELECT * FROM posts WHERE (id = $1)", [id]).to_a
-  
+    @individual_comments  = db.exec("SELECT name, comment, post_id FROM users JOIN comments ON comments.user_id = users.id WHERE (post_id = $1)", [id]).to_a
     erb :individual_topic
   end
 ########################################### connect to db
@@ -203,9 +199,4 @@ class Server < Sinatra::Base
   def db_connect
     PG.connect(dbname: "forum")
   end
-
-  # def markdown(markdown_comment)
-  #   markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
-  #   markdown.render(markdown_comment)
-  # end
 end

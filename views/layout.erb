@@ -4,23 +4,40 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>PROJECT 2</title>
-  <link href='https://fonts.googleapis.com/css?family=Bangers' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
   <link href="/css/style.css" rel="stylesheet" type="text/css">
   <link href="/css/normalize.css" rel="stylesheet" type="text/css">
   <link href="/css/skeleton.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <div class="header"> Header? </div>
+  <div class="header"> 
+    <h1>FORUM</h1> 
+  </div>
+
+  <div class="nav">
+    <ul>
+      <a href="/all_topics">All Topics</a>
+      <a href="/show_all_posts">All Comments</a>
+      <a href="/new_topic">Post New Discussion</a>
+      <a href="/signup">Sign Up</a>
+      <a href="/login">Log In</a>
+      <a href="/logout">Log Out.</a>
+    </ul>
+  </div>
+
     <div class="container">
       <%= yield %>
     </div>
+
   <div class="footer">
-    <a href="/show_all_posts">Recent Comments</a>
-    <a href="/show_all_posts">Recent Comments</a>
-    <a href="/new_topic">Post New Topic For Discussion</a>
-    <a href="/signup">Sign Up!</a>
-    <a href="/login">Log In!</a>
-    <a href="/logout">Log Out...</a>
+    <ul>
+      <li><a href="/all_topics">All Topics</a></li>
+      <li><a href="/show_all_posts">Recent Comments</a></li>
+      <li><a href="/new_topic">Post New Topic For Discussion</a></li>
+      <li><a href="/signup">Sign Up</a></li>
+      <li><a href="/login">Log In</a></li>
+      <li><a href="/logout">Log Out.</a></li>
+    </ul>  
   </div>
 </body>
 </html>
