@@ -70,7 +70,6 @@ class Server < Sinatra::Base
         session['user_id'] = @user['id']
         redirect('/show_all_posts')
       else
-        ############################################################################################ consider a redirect
         @error_password = "Your password isn't working."
         erb :login
       end
@@ -117,7 +116,7 @@ class Server < Sinatra::Base
 
     @all_users = db.exec("SELECT * FROM users").to_a
     @posts = db.exec("select * from users join posts on posts.user_id = users.id").to_a
-    
+
     @comment_count = db.exec_params("select count (post_id) from comments where (post_id = $1)", [id]).to_a
     @added_comments = db.exec("select name, comment, post_id from users join comments on comments.user_id = users.id").to_a
 
@@ -128,7 +127,7 @@ class Server < Sinatra::Base
     end
   end
 
-  get '/topic_upvote/:id' do 
+  get '/topic_upvote/:id' do
     db = db_connect
     id = params[:id].to_i
     db.exec_params("UPDATE posts SET upvote = upvote + 1 WHERE id = ($1)", [id])
@@ -164,7 +163,7 @@ class Server < Sinatra::Base
 
   post '/show_all_posts/:id/add_comment/' do
     db = db_connect
-    
+
     #### Markdown ####
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
     add_new_comment = markdown.render(params[:add_new_comment])
@@ -172,7 +171,7 @@ class Server < Sinatra::Base
 
     id = params[:id].to_i
     db.exec_params("INSERT INTO comments (comment, post_id, user_id) VALUES ($1, $2, $3)", [add_new_comment, id, session["user_id"]])
-    
+
     redirect("/show_all_posts")
   end
 
@@ -197,6 +196,11 @@ class Server < Sinatra::Base
 ########################################### connect to db
 
   def db_connect
-    PG.connect(dbname: "forum")
+
+    if ENV["DATABASE_URL"]
+      PG.connect(ENV["DATABASE_URL"])
+    else
+      PG.connect(dbname: "forum")
+    end
   end
 end
