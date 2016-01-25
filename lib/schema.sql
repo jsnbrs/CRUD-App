@@ -15,13 +15,14 @@ CREATE TABLE posts(
   id serial PRIMARY KEY,
   title varchar NOT NULL,
   post text,
-  post_count integer,
+  upvote integer default 0,
   user_id integer REFERENCES users(id)
 );
 
 CREATE TABLE comments(
   id serial PRIMARY KEY,
   comment text,
+  comment_count integer,
   post_id integer REFERENCES posts(id),
   user_id integer REFERENCES users(id)
 );

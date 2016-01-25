@@ -97,22 +97,19 @@ class Server < Sinatra::Base
 
   post '/new_topic' do
     db = db_connect
-
     title = params[:title]
-    # post = params[:new_topic]
+
+    #### Markdown ####
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
     post = markdown.render(params[:new_topic])
+    #### Markdown ####
+
     @session_user_id = session['user_id']
-
     @new_post = db.exec_params("INSERT INTO posts (title, post, user_id) VALUES ($1, $2, $3)", [title, post, session["user_id"]])
-
-    post_comments = db.exec("select post_id from comments").to_a
-    num_comments = post_comments.each_with_object(Hash.new(0)) { |o, h| h[o] += 1 }
-  #   num_comments.each do |count|
-  #   db.exec("INSERT INTO posts (post_count) VALUES ($1)", [count])
-  # end
-#################clean up above
   
+    # post_comments = db.exec("select post_id from comments").to_a
+    # num_comments = post_comments.each_with_object(Hash.new(0)) { |o, h| h[o] += 1 }
+
     redirect("/show_all_posts")
   end
 ########################################### view all posts
@@ -122,16 +119,10 @@ class Server < Sinatra::Base
     id = params[:id]
 
     @all_users = db.exec("SELECT * FROM users").to_a
-    @posts = db.exec("SELECT * FROM posts").to_a
-
-    # @posts = db.exec("SELECT * FROM posts JOIN users ON posts.user_id = users.id").to_a
-#Key (post_id)=(1) is not present in table "posts"
-
-
-
+    @posts = db.exec("select * from users join posts on posts.user_id = users.id").to_a
+    
+    @comment_count = db.exec_params("select count (post_id) from comments where (post_id = $1)", [id]).to_a
     @added_comments = db.exec("select name, comment, post_id from users join comments on comments.user_id = users.id").to_a
-    # @added_comments = db.exec("select * from comments join users on comments.user_id = users.id")
-
     # figure out what data to base this decision off of
     if session["user_id"]
       erb :show_all_posts
@@ -139,13 +130,21 @@ class Server < Sinatra::Base
       redirect('/login')
     end
   end
+
+  get '/topic_upvote/:id' do 
+    db = db_connect
+    id = params[:id].to_i
+    db.exec_params("UPDATE posts SET upvote = upvote + 1 WHERE id = ($1)", [id])
+    redirect('/show_all_posts')
+  end
 ########################################### individual posts
 
   get '/show_all_posts/:id' do
     db = db_connect
-    id = params[:id].to_i
-    # db.exec("SELECT * FROM posts WHERE id = #{params["id"].to_i}").first
-    @comment = db.exec("SELECT title, post, FROM posts WHERE (id = $1)", [id]).first
+    # id = params[:id].to_i
+    # @individual_post = db.exec_params("SELECT * FROM posts WHERE (id = $1)", [id]).first
+    # @comment = db.exec_params("SELECT title, post, FROM posts WHERE (id = $1)", [id]).first
+
     erb :add_comment
   end
 ########################################### delete posts
@@ -163,6 +162,8 @@ class Server < Sinatra::Base
 
   get '/show_all_posts/:id/add_comment/' do
     if session["user_id"] #### redirect here if user not logged in
+      id = params[:id].to_i
+      #not working @individual_post = db.exec_params("SELECT * FROM posts WHERE (id = $1)", [id]).to_a
     erb :add_comment
     else
       redirect('/login')
@@ -171,22 +172,31 @@ class Server < Sinatra::Base
 
   post '/show_all_posts/:id/add_comment/' do
     db = db_connect
-
-    # add_new_comment = params[:add_new_comment]
+    
+    #### Markdown ####
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
     add_new_comment = markdown.render(params[:add_new_comment])
-    ############# Counter
-    @topic_counter = 0
-
+    #### Markdown ####
 
     id = params[:id].to_i
-    # session_user_id_to_i = session['user_id'].to_i
-    
-
-
     db.exec_params("INSERT INTO comments (comment, post_id, user_id) VALUES ($1, $2, $3)", [add_new_comment, id, session["user_id"]])
-
+    
     redirect("/show_all_posts")
+  end
+
+  get '/all_topics' do
+    db = db_connect
+    @order_by_upvotes = db.exec("SELECT * FROM posts ORDER BY upvote DESC").to_a
+
+    erb :all_topics
+  end
+
+  get '/individual_topic/:id' do
+    db = db_connect
+    id = params[:id].to_i
+    @individual_post = db.exec_params("SELECT * FROM posts WHERE (id = $1)", [id]).to_a
+  
+    erb :individual_topic
   end
 ########################################### connect to db
 

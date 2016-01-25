@@ -1,32 +1,31 @@
 
 
-<h2>Recent Posts</h2>
- <!-- @posts = db.exec("SELECT * FROM posts JOIN users ON posts.user_id = users.id") -->
- 
+<h2>ALL TOPICS AND COMMENTS</h2>
+
   <% @posts.each do |display| %>
 
     <div class="posts">
-      <h5>TITLE: </h5><%="#{display['title']}" %>
-      <h6>Posted by: </h6><%="#{}" %>
-       <!-- a["post_id"=>"9"] -->
-      <h5>POST: </h5>
+
+      <div><h5>TITLE: </h5><%= "#{display['title']}" %></div>
+      <h6>Posted by: </h6><%= "#{display['name']}" %>
+
+      <h5>POST: </h5><%= "#{display['post']}" %>
   
-      <p>Replies</p><%%>
+      <p>Replies</p>
     
-    
-<!-- @added_comments = db.exec("select * from comments join users on comments.user_id = users.id") -->
         <% if @added_comments %>
           <% @added_comments.each do |show| %>
 
             <% if show['post_id'].to_i == display['id'].to_i %>
         
               <div><%= "#{show['name']}" %> => <%= "#{show['comment']}" %></div><br>
+
             <% end %>
             
           <% end %>
 
         <% end %>
-
+<div>
     <div class="input-row">
       <form method="post" action="/show_all_posts/<%=display['id'] %>">
         <input type="hidden" name="_method" value="DELETE">
@@ -35,11 +34,17 @@
     </div>
 
     <div class="input-row">
+      <form method="get" action="/topic_upvote/<%=display['id'] %>">
+        <input type="submit" value="Upvote Topic">
+      </form>
+    </div>
+
+    <div class="input-row">
       <form method="get" action="/show_all_posts/<%=display['id'] %>/add_comment/">
         <input type="submit" value="ADD NEW COMMENT">
       </form>
     </div>
-
+</div>
     </div>
 
 <% end %>
