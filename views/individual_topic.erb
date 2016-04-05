@@ -2,21 +2,22 @@
 
 <% @individual_post.each do |one| %>
 
-      <div class="six columns"><h3>TITLE: </h3></div><div class="eight columns"><%= "#{one['title']}" %></div>
-      <div class="six columns"><h6>Posted by: </h6></div><div class="eight columns"><%= "#{one['name']}" %></div>
-      <div class="four columns"><h5>POST: </h5></div><div class="eight columns"><%= "#{one['post']}" %></div>
-      <div class="seven columns"><h5>REPLIES:</h5></div><div class="six columns"></div>
-            
+      <div><h5>TOPIC: <%= "#{one['title']}" %></h5></div>
+      <div><h5>Posted by: <%= "#{one['name']}" %></h5></div>
+      <div><h5>POST: <%= "#{one['post']}" %></h5></div>
+      <div><h5>Discussion:</h5></div>
+
   <% if @individual_comments %>
     <% @individual_comments.each do |show| %>
 
       <% if show['post_id'].to_i == one['id'].to_i %>
-        
-        <div class="four columns"><%= "#{show['name']}" %> => </div><div class="eight columns"><%= "#{show['comment']}" %></div>
+        <div class="reply">
+          <div><%= "#{show['name']}" %>: <%= "#{show['comment']}" %></div>
+        </div>
+      <% end %> <!-- if show ends -->
+    <% end %> <!-- individual do ends -->
+  <% end %> <!-- if individial ends -->
+<% end %> <!-- each ends -->
 
-      <% end %>        
-    <% end %>
-  <% end %>
-<% end %>
-</div>
+<!-- container ends -->
 </div>
