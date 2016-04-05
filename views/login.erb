@@ -1,7 +1,7 @@
 <!-- Log in page -->
-<div class="container">
+<div class="container sign">
 
-  <h2>Log In</h2>
+  <h4>SIGN IN</h4>
 
     <%if @error_email%>
       <%= @error_email%>
@@ -14,21 +14,21 @@
   <form actions="/login" method="post">
 
     <div class="input-row">
-        <label for="email">Email: </label>
+        <label for="email">Email</label>
         <input type="email" name="email" />
     </div>
 
     <div class="input-row">
-        <label for="password">Password: </label>
+        <label for="password">Password</label>
         <input type="password" name="login_password" />
     </div>
 
     <div class="input-row">
-        <input type="submit" value="Log In!" />
+        <input type="submit" value="Sign In!" />
     </div>
 
   </form>
 
-  <h4>Don't have a login? <a href="/signup">Please sign up!</a></h4>
+    <h6>Don't have an account? <a href="/signup" class="signup">Sign up</a></h6>
 
 </div>

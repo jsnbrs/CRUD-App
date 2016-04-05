@@ -1,15 +1,19 @@
-.header {
-/*	background-size: cover;
-	background-position: center;*/
-	color: #646464;
-/*	text-align: right;
-	position: fixed;
-	left: 0px;
-	top: 0px;
-	width: 100%;
-	height: 500px;*/
+.header-image {
+    background: url(../img/needle.jpg) no-repeat center center scroll;
+    background-size: cover;
+    background-position: center;
+    opacity: .8;
+    margin-top: 0px;
+    height: 325px;
+    min-width: 100%;
 }
-
+.title {
+    color: white;
+    text-shadow: 1px 1px black;
+    padding-top: 10%;
+    text-align: center;
+    margin: 0 auto;
+}
 .footer {
 	text-align: center;
 	position: fixed;
@@ -17,60 +21,67 @@
 	left: 0px;
 	width: 100%;
 	color: #FFFFFF;
-	background: #646464;
+	background: #222425;
+    padding-top: 20px; 
 }
-
-.nav {
-  width: 10%;
-  float: left;
-  background-color: lightgray;
+.yields {
+    padding-top: 3%;
 }
 
 .content {
-  width: 80%;
+    width: 80%;
 }
-
+a {
+    text-decoration: none;
+}
+.signup {
+    text-decoration: underline;
+}
 a:hover {
-  color: black;
+    color: black;
 }
-
 a:link {
-  text-decoration: none;
-  color: black;
+    color: black;
 }
-
 li {
-	display: inline;
-	padding: 0px 5px 0px 5px;
+    display: inline;
+    padding: 0px 5px 0px 5px;
 }
 div.input-row { 
-	display: inline-block; 
-  padding: 0px 30px 0px 30px;
+    padding: 0px 30px 0px 30px;
+}
+input {
+    width: 370px;
+}
+.sign {
+    text-align: center;
+    margin: 0 auto;
 }
 div.posts {
-  border-style: solid;
-  border-width: 1px;
-  padding: 15px;
-  background-color: lightgray;
+    border-style: solid;
+    border-width: 1px;
+    padding: 15px;
+    background-color: lightgray;
 }
 
 div.input-row input[type=title] {
-  font-size: 22px;
-  width: 428px;
-  height: 30px;
-  padding: 6px;
-  border: 1px solid #bbb;
+    font-size: 22px;
+    width: 428px;
+    height: 30px;
+    padding: 6px;
+    border: 1px solid #bbb;
 }
 
 div.input-row input[type=submit] {
-	background-color: #33FF99;
+	background-color: #324668;
+    color: white;
 }
 
 div.input-row textarea {
-  font-size: 22px;
-  padding: 6px;
-  width: 440px;
-  height: 200px;
-  border: 1px solid #bbb;
+    font-size: 22px;
+    padding: 6px;
+    width: 440px;
+    height: 200px;
+    border: 1px solid #bbb;
 }
 
