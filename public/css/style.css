@@ -4,13 +4,13 @@
     background-position: center;
     opacity: .8;
     margin-top: 0px;
-    height: 325px;
+    height: 240px;
     min-width: 100%;
 }
 .title {
     color: white;
     text-shadow: 1px 1px black;
-    padding-top: 10%;
+    padding-top: 8%;
     text-align: center;
     margin: 0 auto;
 }
@@ -19,15 +19,18 @@
 	position: fixed;
 	bottom: 0px;
 	left: 0px;
+    height: 4em;
 	width: 100%;
 	color: #FFFFFF;
 	background: #222425;
-    padding-top: 20px; 
+}
+ul {
+    margin-top: 2em;
 }
 .yields {
     padding-top: 3%;
+    padding-bottom: 5%;
 }
-
 .content {
     width: 80%;
 }
@@ -47,7 +50,7 @@ li {
     display: inline;
     padding: 0px 5px 0px 5px;
 }
-div.input-row { 
+div.input-row {
     padding: 0px 30px 0px 30px;
 }
 input {
@@ -57,17 +60,23 @@ input {
     text-align: center;
     margin: 0 auto;
 }
+.bold {
+    font-weight: bold;
+}
 div.posts {
     border-style: solid;
     border-width: 1px;
     padding: 15px;
     background-color: lightgray;
 }
-
+.reply {
+    border: solid;
+    border-width:  1px 0px 0px 0px;
+}
 div.input-row input[type=title] {
-    font-size: 22px;
-    width: 428px;
-    height: 30px;
+    font-size: 1em;
+    width: 80%;
+    height: 1.25em;
     padding: 6px;
     border: 1px solid #bbb;
 }
@@ -75,13 +84,16 @@ div.input-row input[type=title] {
 div.input-row input[type=submit] {
 	background-color: #324668;
     color: white;
+    width: 188px;
 }
 
 div.input-row textarea {
-    font-size: 22px;
+    font-size: 1em;
     padding: 6px;
-    width: 440px;
-    height: 200px;
+    width: 82%;
+    height: 4em;
     border: 1px solid #bbb;
 }
-
+.all {
+    display: inline-block;
+}

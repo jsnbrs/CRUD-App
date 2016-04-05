@@ -1,48 +1,53 @@
 <div class="container">
 
-<h2>ALL TOPICS AND COMMENTS</h2>
+<h4>ALL TOPICS AND COMMENTS</h4>
 
   <% @posts.each do |display| %>
 
     <div class="posts">
 
-      <div class="two columns"><h5>TITLE: </h5></div><div class="ten columns"><h5><%= "#{display['title']}" %></h5></div>
+      <div><h6 class="bold">TOPIC: <%= "#{display['title']}" %></h6></div>
 
-      <div><h5>Posted by: </h5></div><div><h5><%= "#{display['name']}" %></h5></div>
-      <div><h5>POST: <%= "#{display['post']}" %></h5></div>
-      <div><h5>REPLIES:</h5></div>
-    
+      <div><h6 class="bold">Posted by: <%= "#{display['name']}" %></h6></div>
+      <div><h6 class="bold">POST: <%= "#{display['post']}" %></h6></div>
+      <div><h6 class="bold">Discussion:</h6></div>
+
         <% if @added_comments %>
           <% @added_comments.each do |show| %>
 
           <% if show['post_id'].to_i == display['id'].to_i %>
-        
-            <div><%= "#{show['name']}" %> => </div><div><%= "#{show['comment']}" %></div>
-
-          <% end %>     
+            <div class="reply">
+              <span><div><%= "#{show['name']}" %>: <%= "#{show['comment']}" %></div></span>
+            </div>
+          <% end %>
       <% end %>
   <% end %>
 
+<br>
+
 <div>
-    <div class="input-row">
+    <div class="input-row all">
       <form method="post" action="/show_all_posts/<%=display['id'] %>">
         <input type="hidden" name="_method" value="DELETE">
         <input type="submit" value="DELETE THIS POST">
       </form>
     </div>
 
-    <div class="input-row">
+    <div class="input-row all">
       <form method="get" action="/topic_upvote/<%=display['id'] %>">
         <input type="submit" value="Upvote Topic">
       </form>
     </div>
 
-    <div class="input-row">
+    <div class="input-row all">
       <form method="get" action="/show_all_posts/<%=display['id'] %>/add_comment/">
         <input type="submit" value="ADD NEW COMMENT">
       </form>
     </div>
   </div>
 </div>
+<br>
+
 <% end %>
+
 </div>
