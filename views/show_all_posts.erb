@@ -17,7 +17,7 @@
 
           <% if show['post_id'].to_i == display['id'].to_i %>
             <div class="reply">
-              <span><div><%= "#{show['name']}" %>: <%= "#{show['comment']}" %></div></span>
+              <div class="namecomment"><%= "#{show['name']}" %>:</div> <div class="namecomment"> <%= "#{show['comment']}" %></div>
             </div>
           <% end %>
       <% end %>
@@ -25,7 +25,8 @@
 
 <br>
 
-<div>
+<div class="centerbutton">
+
     <div class="input-row all">
       <form method="post" action="/show_all_posts/<%=display['id'] %>">
         <input type="hidden" name="_method" value="DELETE">

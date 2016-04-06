@@ -24,8 +24,8 @@
 	color: #FFFFFF;
 	background: #222425;
 }
-ul {
-    margin-top: 2em;
+.footlinks {
+    margin-top: 1em;
 }
 .yields {
     padding-top: 3%;
@@ -73,6 +73,9 @@ div.posts {
     border: solid;
     border-width:  1px 0px 0px 0px;
 }
+.namecomment {
+    display: inline-block;
+}
 div.input-row input[type=title] {
     font-size: 1em;
     width: 80%;
@@ -80,19 +83,21 @@ div.input-row input[type=title] {
     padding: 6px;
     border: 1px solid #bbb;
 }
-
 div.input-row input[type=submit] {
 	background-color: #324668;
     color: white;
     width: 188px;
 }
-
 div.input-row textarea {
     font-size: 1em;
     padding: 6px;
     width: 82%;
     height: 4em;
     border: 1px solid #bbb;
+}
+.centerbutton {
+    text-align: center;
+    margin: 0 auto;
 }
 .all {
     display: inline-block;
