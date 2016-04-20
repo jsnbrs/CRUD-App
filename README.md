@@ -1,9 +1,8 @@
-# ga-project-2
-Second project at GA
+##Second project at GA
 
-Database driven message board CRUD web app built on Sinatra using Ruby and SQL. 
+Our assignment was to create a database driven message board ######CRUD web app built on ######Sinatra using #####Ruby and ######SQL. 
 
-Created secure sign up, login and password functionality with the database by utilizing [bcrypt](http://bcrypt-ruby.rubyforge.org) Ruby gem to store encrypted passwords. 
+I created secure sign up, login and password functionality with the database by utilizing [bcrypt](http://bcrypt-ruby.rubyforge.org) Ruby gem to store encrypted passwords. 
 
 Also used [Redcarpet](https://github.com/vmg/redcarpet) library for Markdown text formatting and [Skeleton](http://getskeleton.com) boilerplate for CSS. Deployed the Rack based site to Heroku cloud application hosting platform.
 
