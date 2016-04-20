@@ -1,6 +1,6 @@
 ##Second project at GA
 
-Our assignment was to create a database driven message board #####CRUD##### web app built on ######Sinatra using #####Ruby and ######SQL. 
+Our assignment was to create a database driven message board #CRUD web app built on Sinatra using Ruby and SQL. 
 
 I created secure sign up, login and password functionality with the database by utilizing [bcrypt](http://bcrypt-ruby.rubyforge.org) Ruby gem to store encrypted passwords. 
 
