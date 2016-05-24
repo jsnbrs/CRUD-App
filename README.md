@@ -1,13 +1,9 @@
-# ga-project-2
-Second project at GA
+##Second project at GA
 
+Our assignment was to create a database driven message board CRUD web app built on Sinatra using Ruby and SQL. 
 
-The project's name and description
+I created secure sign up, login and password functionality with the database by utilizing [bcrypt](http://bcrypt-ruby.rubyforge.org) Ruby gem to store encrypted passwords. 
 
-Your feature spec with links to pictures of your wireframes
+Also used [Redcarpet](https://github.com/vmg/redcarpet) library for Markdown text formatting and [Skeleton](http://getskeleton.com) boilerplate for CSS. Deployed the Rack based site to Heroku cloud application hosting platform.
 
-A representation of your ERD - a picture of a whiteboard drawing will work just fine here
-
-APIs or modules used and descriptions of each
-
-Instructions for downloading the code and running it on localhost
+The link to the site is https://jason-project.herokuapp.com, Heroku takes a few seconds to get its Dyno's spinning, so it might take a little bit of time to open.

@@ -21,7 +21,6 @@
 	left: 0px;
     height: 4em;
 	width: 100%;
-	color: #FFFFFF;
 	background: #222425;
 }
 .footlinks {
@@ -67,7 +66,7 @@ div.posts {
     border-style: solid;
     border-width: 1px;
     padding: 15px;
-    background-color: lightgray;
+    background-color: RGBA(195,195,195,.5);
 }
 .reply {
     border: solid;
@@ -75,6 +74,7 @@ div.posts {
 }
 .namecomment {
     display: inline-block;
+    padding-top: 2.4px;
 }
 div.input-row input[type=title] {
     font-size: 1em;
